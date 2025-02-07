@@ -28,14 +28,19 @@ def remove_duplicates(df):
     return df.drop_duplicates()
 
 # Convert columns to datetime or numeric
-def correct_data_types(df, datetime_cols=None, numeric_cols=None):
+
+def correct_data_types(df, datetime_cols=None, numeric_cols=None, float_to_int_cols=None):
     if datetime_cols:
         for col in datetime_cols:
             df[col] = pd.to_datetime(df[col])
     if numeric_cols:
         for col in numeric_cols:
             df[col] = pd.to_numeric(df[col], errors='coerce')
+    if float_to_int_cols:
+        for col in float_to_int_cols:
+            df[col] = df[col].astype(int) 
     return df
+
 
 # Convert IP address to integer
 def convert_ip_to_int(ip):
