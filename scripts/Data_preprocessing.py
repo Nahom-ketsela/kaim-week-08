@@ -41,15 +41,31 @@ def correct_data_types(df, datetime_cols=None, numeric_cols=None, float_to_int_c
             df[col] = df[col].astype(int) 
     return df
 
-
-# Convert IP address to integer
 def convert_ip_to_int(ip):
-    return int(ipaddress.ip_address(ip))
+    """
+    Convert an IP address (numeric or dotted-quad string) to an integer.
+    """
+    if isinstance(ip, (int, float)):
+        return int(round(ip)) 
+    elif isinstance(ip, str):
+        try:
+            return int(round(float(ip)))  
+        except ValueError:
+            return int(ipaddress.ip_address(ip))  
+    else:
+        raise ValueError(f"Invalid IP address type: {ip}")
 
-# Merge IP-to-country data with fraud data
 def merge_ip_country(df_fraud, df_ip_country):
+    """
+    Merge fraud data with IP-to-country data using IP address ranges.
+    """
+    # Convert fraud IP addresses to integers
     df_fraud['ip_int'] = df_fraud['ip_address'].apply(convert_ip_to_int)
+    
+    # Sort IP-country data by the lower IP bound
     df_ip_country.sort_values('lower_bound_ip_address', inplace=True)
+    
+    # Merge fraud and IP-country data using an asof merge
     merged_df = pd.merge_asof(
         df_fraud.sort_values('ip_int'),
         df_ip_country,
@@ -57,10 +73,13 @@ def merge_ip_country(df_fraud, df_ip_country):
         right_on='lower_bound_ip_address',
         direction='backward'
     )
-    return merged_df[
+    
+    # Keep rows where the IP is within the specified IP range
+    merged_df = merged_df[
         (merged_df['ip_int'] >= merged_df['lower_bound_ip_address']) &
         (merged_df['ip_int'] <= merged_df['upper_bound_ip_address'])
     ]
+    return merged_df
 
 # Add new features
 def feature_engineering(df):
