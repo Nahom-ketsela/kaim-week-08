@@ -2,6 +2,6 @@
 /venv
 /notebook/mlruns
 /mlruns
-/models
+fraud-detection-api/models
 /notebook/fraud_preprocessed_data.npz
 /notebook/preprocessed_data.npz

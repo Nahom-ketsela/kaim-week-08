@@ -6,3 +6,7 @@ seaborn
 imbalanced-learn
 tensorflow
 mlflow
+Flask
+gunicorn
+joblib
+Flask-Logging
