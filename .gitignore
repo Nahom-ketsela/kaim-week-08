@@ -3,5 +3,6 @@
 /notebook/mlruns
 /mlruns
 fraud-detection-api/models
-/notebook/fraud_preprocessed_data.npz
-/notebook/preprocessed_data.npz
+/notebook/*.npz
+/notebook/*.csv
+/notebook/*.pkl
