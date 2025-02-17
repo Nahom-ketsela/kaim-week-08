@@ -2,3 +2,6 @@
 /venv
 /notebook/mlruns
 /mlruns
+/models
+/notebook/fraud_preprocessed_data.npz
+/notebook/preprocessed_data.npz
