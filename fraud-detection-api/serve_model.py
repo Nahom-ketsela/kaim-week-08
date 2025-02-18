@@ -112,8 +112,8 @@ def predict():
         # Get fraud probability if model supports predict_proba
         prob = None
         if hasattr(model, "predict_proba"):
-            prob = model.predict_proba(input_data)[0][1]  # Probability of fraud (class 1)
-
+            prob = model.predict_proba(input_data)[0][1]  
+            
         # Convert prediction to a readable label
         prediction_label = "fraud" if prediction == 1 else "not fraud"
 
